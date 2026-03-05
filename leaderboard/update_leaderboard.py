@@ -1,17 +1,16 @@
-from pathlib import Path
+import json
+import os
 
-import pandas as pd
-
-from .calculate_scores import get_leaderboard_data
+from calculate_scores import get_leaderboard_data
 
 
-def update_leaderboard_csv() -> None:
+def main() -> None:
     leaderboard_data = get_leaderboard_data()
-    output_path = Path(__file__).resolve().parent / "leaderboard.csv"
-    df = pd.DataFrame(leaderboard_data)
-    df.to_csv(output_path, index=False)
+    output_path = os.path.join(os.path.dirname(__file__), "leaderboard.json")
+    with open(output_path, "w", encoding="utf-8") as output_file:
+        json.dump(leaderboard_data, output_file, indent=4)
     print(f"Updated leaderboard at {output_path}")
 
 
 if __name__ == "__main__":
-    update_leaderboard_csv()
+    main()
